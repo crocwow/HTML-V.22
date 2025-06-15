@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CS2 Pro Crosshair & Sensitivity</title>
+  <style>
+    * { box-sizing: border-box; margin:0; padding:0 }
+    html, body { height:100%; }
+    body {
+      display: flex;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg,#1e1a8a,#3b82f6);
+      color:#eee;
+      padding:1rem;
+      gap:1rem;
+    }
+    /* sidebar */
+    .sidebar {
+      width:200px;
+      background:rgba(0,0,0,0.5);
+      border-radius:6px;
+      overflow:auto;
+    }
+    .sidebar h3 {
+      text-align:center;
+      padding:.5rem 0;
+      border-bottom:1px solid #444;
+    }
+    .sidebar ul { list-style:none; }
+    .sidebar li {
+      padding:.5rem;
+      text-align:center;
+      cursor:pointer;
+      border-bottom:1px solid #333;
+      font-size:.9rem;
+    }
+    .sidebar li:hover { background:rgba(255,255,255,0.1); }
+    /* controls */
+    .controls {
+      flex:1;
+      max-width:360px;
+      background:rgba(0,0,0,0.5);
+      padding:1rem;
+      border-radius:8px;
+      box-shadow:0 0 10px #000;
+      display:grid;
+      gap:1rem;
+    }
+    .controls h3 {
+      text-align:center;
+      font-size:1.1rem;
+      border-bottom:1px solid #444;
+      padding-bottom:.3rem;
+    }
+    .controls label {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:.9rem;
+    }
+    .controls input[type="number"],
+    .controls input[type="color"] {
+      background:#222;
+      border:1px solid #444;
+      color:#eee;
+      border-radius:4px;
+      padding:2px 4px;
+      text-align:right;
+    }
+    .controls input[type="number"] { width:70px; }
+    .controls input[type="color"] {
+      width:32px; height:24px; padding:0; border:none;
+    }
+    .controls input[type="checkbox"] { transform:scale(1.2); }
+    .controls button {
+      padding:.5rem;
+      font-size:1rem;
+      border:none;
+      border-radius:4px;
+      cursor:pointer;
+      background:#2563eb;
+      color:#fff;
+    }
+    .controls button:hover { background:#1e40af; }
+    .code textarea {
+      width:100%;
+      height:180px;
+      background:#111;
+      color:#0f0;
+      border:1px solid #444;
+      padding:.5rem;
+      font-family:monospace;
+      resize:none;
+      border-radius:4px;
+    }
+    /* preview */
+    .preview {
+      width:150px; height:150px;
+      background:rgba(17,17,17,0.8);
+      border:2px solid #444;
+      box-shadow:0 0 10px #000;
+      border-radius:4px;
+      position:relative;
+    }
+    .bar, .dot { position:absolute; background:white; }
+  </style>
+</head>
+<body>
+
+  <!-- PRO LIST -->
+  <div class="sidebar">
+    <h3>Pro Presets</h3>
+    <ul id="playerList">
+      <li data-player="s1mple">s1mple</li>
+      <li data-player="ZywOo">ZywOo</li>
+      <li data-player="NiKo">NiKo</li>
+      <li data-player="donk">donk</li>
+      <li data-player="monesy">monesy</li>
+      <li data-player="device">device</li>
+      <li data-player="ropz">ropz</li>
+      <li data-player="fer">fer</li>
+      <li data-player="dupreeh">dupreeh</li>
+      <li data-player="gla1ve">gla1ve</li>
+      <li data-player="coldzera">coldzera</li>
+      <li data-player="f0rest">f0rest</li>
+      <li data-player="Xyp9x">Xyp9x</li>
+      <li data-player="electronic">electronic</li>
+      <li data-player="stewie2k">stewie2k</li>
+      <li data-player="karrigan">karrigan</li>
+      <li data-player="frozen">frozen</li>
+      <li data-player="croc">croc</li>
+      <li data-player="maktracer">maktracer</li>
+      <li data-player="magixx">magixx</li>
+<li data-player="AWPER">AWPER</li>
+<li data-player="RIFLER">RIFLER</li>
+<li data-player="PISTOLER">PISTOLER</li>
+<li data-player="IGL">IGL</li>
+<li data-player="FACEIT">FACEIT</li>
+<li data-player="RESET">RESET</li>
+
+
+
+
+
+    </ul>
+  </div>
+
+  <!-- CONTROL PANELS -->
+  <div class="controls">
+    <h3>Crosshair & Sensitivity</h3>
+
+    <!-- crosshair -->
+    <label>Color            <input type="color"   id="color"      value="#00ff00"></label>
+    <label>Alpha (0–255)    <input type="number"  id="alpha"      min="0" max="255" value="255"></label>
+    <label>Size (px)        <input type="number"  id="size"       min="0.1" max="50" step="0.1" value="5"></label>
+    <label>Thickness (px)   <input type="number"  id="thickness"  min="0.1" max="10" step="0.1" value="0.5"></label>
+    <label>Gap (px)         <input type="number"  id="gap"        min="-50" max="50" step="0.1" value="0"></label>
+    <label>Dot              <input type="checkbox" id="dot"></label>
+    <label>Outline          <input type="checkbox" id="outline"></label>
+    <label>Outline Thick    <input type="number"  id="outlineThick" min="0.1" max="5" step="0.1" value="1"></label>
+    <label>T-Style          <input type="checkbox" id="tstyle"></label>
+
+    <!-- sensitivity -->
+    <label>DPI              <input type="number"  id="dpi"       value="800" min="1"></label>
+    <label>Game Sens        <input type="number"  id="gamesens"  value="1.00" step="0.01" min="0.01"></label>
+    <label>Zoom Ratio       <input type="number"  id="zoomratio" value="1.00" step="0.01" min="0.01"></label>
+    <label>→ eDPI           <input type="text"    id="edpi"      readonly></label>
+
+    <!-- commands & copy -->
+    <div class="code">
+      <strong>Console Commands</strong>
+      <textarea id="cmds" readonly></textarea>
+      <button id="copy">Copy All</button>
+    </div>
+  </div>
+
+  <!-- LIVE PREVIEW -->
+  <div class="preview">
+    <div class="bar top"></div>
+    <div class="bar bottom"></div>
+    <div class="bar left"></div>
+    <div class="bar right"></div>
+    <div class="dot"></div>
+  </div>
+
+  <script>
+    const PREVIEW = 150, C = PREVIEW/2;
+    const get = id=>document.getElementById(id);
+
+    // inputs
+    const colorEl     = get('color'),
+          alphaEl     = get('alpha'),
+          sizeEl      = get('size'),
+          thickEl     = get('thickness'),
+          gapEl       = get('gap'),
+          dotEl       = get('dot'),
+          outlineEl   = get('outline'),
+          outThickEl  = get('outlineThick'),
+          tstyleEl    = get('tstyle'),
+          dpiEl       = get('dpi'),
+          gamesensEl  = get('gamesens'),
+          zoomEl      = get('zoomratio'),
+          edpiEl      = get('edpi'),
+          cmdsEl      = get('cmds'),
+          copyBtn     = get('copy');
+
+    // preview bars
+    const bars = {
+      top:    document.querySelector('.bar.top'),
+      bottom: document.querySelector('.bar.bottom'),
+      left:   document.querySelector('.bar.left'),
+      right:  document.querySelector('.bar.right'),
+      dot:    document.querySelector('.dot')
+    };
+
+    // pro presets
+    const players = {
+      s1mple: {
+        color:'#ffffff', alpha:255, size:0, thickness:1.5, gap:-2,
+        dot:true, outline:false, outlineTh:1, tstyle:false,
+        dpi:400, gamesens:2, zoom:0.88
+      },
+      ZywOo: {
+        color:'#00ff00', alpha:255, size:1.5, thickness:1, gap:-3,
+        dot:false, outline:false, outlineTh:0.5, tstyle:false,
+        dpi:400, gamesens:1.75, zoom:1.00
+      },
+      NiKo: {
+        color:'#ff0000', alpha:255, size:2, thickness:1.2, gap:-3,
+        dot:false, outline:true, outlineTh:1, tstyle:true,
+        dpi:400, gamesens:2.08, zoom:1.00
+      },
+      donk: {
+        color:'#ffff00', alpha:255, size:1, thickness:1, gap:-4,
+        dot:false, outline:false, outlineTh:0.5, tstyle:false,
+        dpi:800, gamesens:1.70, zoom:1.00
+      },
+      monesy: {
+        color:'#00ffff', alpha:255, size:1, thickness:1, gap:-3,
+        dot:false, outline:false, outlineTh:0.5, tstyle:false,
+        dpi:400, gamesens:1.85, zoom:1.00
+      },
+      device: {
+        color:'#ff0000', alpha:200, size:2, thickness:1, gap:-2,
+        dot:false, outline:true, outlineTh:1, tstyle:false,
+        dpi:400, gamesens:2.00, zoom:1.00
+      },
+      ropz: {
+        color:'#ffffff', alpha:255, size:3, thickness:1, gap:-2,
+        dot:false, outline:false, outlineTh:0.5, tstyle:true,
+        dpi:400, gamesens:2.30, zoom:1.00
+      },
+      fer: {
+        color:'#00ff00', alpha:255, size:2, thickness:1, gap:-1,
+        dot:false, outline:true, outlineTh:1, tstyle:false,
+        dpi:400, gamesens:2.00, zoom:1.00
+      },
+      dupreeh: {
+        color:'#ff00ff', alpha:255, size:2, thickness:1, gap:-2,
+        dot:false, outline:false, outlineTh:0.5, tstyle:false,
+        dpi:800, gamesens:1.18, zoom:1.00
+      },
+      gla1ve: {
+        color:'#ffffff', alpha:255, size:2.5, thickness:1, gap:-2,
+        dot:false, outline:true, outlineTh:1, tstyle:false,
+        dpi:400, gamesens:1.28, zoom:1.00
+      },
+      coldzera: {
+        color:'#00ff00', alpha:255, size:2, thickness:1, gap:-2,
+        dot:false, outline:false, outlineTh:0.5, tstyle:false,
+        dpi:400, gamesens:2.50, zoom:0.90
+      },
+      f0rest: {
+        color:'#ffff00', alpha:255, size:2, thickness:1, gap:-1,
+        dot:false, outline:false, outlineTh:0.5, tstyle:false,
+        dpi:400, gamesens:1.40, zoom:1.00
+      },
+      Xyp9x: {
+        color:'#00ff00', alpha:200, size:2, thickness:1, gap:-2,
+        dot:false, outline:true, outlineTh:1, tstyle:false,
+        dpi:800, gamesens:0.67, zoom:1.00
+      },
+      electronic: {
+        color:'#ff0000', alpha:255, size:2.5, thickness:1, gap:-2,
+        dot:false, outline:false, outlineTh:0.5, tstyle:true,
+        dpi:400, gamesens:1.95, zoom:1.00
+      },
+      stewie2k: {
+        color:'#ffffff', alpha:255, size:2, thickness:1, gap:-2,
+        dot:false, outline:true, outlineTh:1, tstyle:false,
+        dpi:400, gamesens:2.25, zoom:1.00
+      },
+        karrigan: {
+        color:'#ffff00', alpha:255, size:1, thickness:1, gap:-4,
+        dot:false, outline:false, outlineTh:0.5, tstyle:false,
+        dpi:1000, gamesens:1.25, zoom:1.00
+      },
+ frozen: {
+        color:'#00ff00', alpha:255, size:1, thickness:1, gap:-4,
+        dot:false, outline:false, outlineTh:0.5, tstyle:false,
+        dpi:800, gamesens:2, zoom:1.00
+      },
+
+croc: {
+        color:'#ffff00', alpha:255, size:1, thickness:1, gap:-4,
+        dot:false, outline:false, outlineTh:0.5, tstyle:false,
+        dpi:800, gamesens:1.50, zoom:1.00
+      },
+
+
+maktracer: {
+        color:'#ffff00', alpha:255, size:1, thickness:1, gap:-3,
+        dot:false, outline:false, outlineTh:0.5, tstyle:false,
+        dpi:412, gamesens:1.50, zoom:1.20
+      },
+magixx: {
+        color:'#ffff00', alpha:255, size:2, thickness:0, gap:-3,
+        dot:false, outline:false, outlineTh:0.5, tstyle:false,
+        dpi:400, gamesens:2, zoom:1.00
+      },
+
+
+
+AWPER: {
+        color:'#00ff00', alpha:255, size:1, thickness:0.5, gap:-2,
+        dot:false, outline:false, outlineTh:0.5, tstyle:false,
+        dpi:1500, gamesens:2.50, zoom:0.90
+      },
+RIFLER: {
+        color:'#00ff00', alpha:255, size:1, thickness:1, gap:-4,
+        dot:false, outline:false, outlineTh:0.5, tstyle:false,
+        dpi:2000, gamesens:1.25, zoom:1
+      },
+PISTOLER: {
+        color:'#00ff00', alpha:255, size:1, thickness:2, gap:-4,
+        dot:false, outline:false, outlineTh:0.5, tstyle:false,
+        dpi:1000, gamesens:1.5, zoom:1.5
+      },
+IGL: {
+        color:'#ffffff', alpha:255, size:2, thickness:0.5, gap:-4,
+        dot:false, outline:false, outlineTh:0.5, tstyle:false,
+        dpi:1000, gamesens:1, zoom:1
+      },
+FACEIT: {
+        color:'#ffffff', alpha:255, size:1, thickness:0.5, gap:-4,
+        dot:false, outline:false, outlineTh:0.5, tstyle:false,
+        dpi:1000, gamesens:1.10, zoom:1
+      },
+RESET: {
+        color:'#ffffff', alpha:255, size:4, thickness:0.5, gap:0,
+        dot:false, outline:false, outlineTh:0.5, tstyle:false,
+        dpi:1000, gamesens:1, zoom:1
+      },
+
+
+
+
+
+
+
+
+      
+
+    };
+
+    // update preview + commands
+    function update() {
+      // crosshair
+      const hex = colorEl.value.slice(1);
+      const [r,g,b] = [0,2,4].map(i=>parseInt(hex.substr(i,2),16));
+      const alpha    = +alphaEl.value;
+      const size     = +sizeEl.value;
+      const thick    = +thickEl.value;
+      const gap      = +gapEl.value;
+      const dot      = dotEl.checked;
+      const outline  = outlineEl.checked;
+      const ot       = +outThickEl.value;
+      const tsty     = tstyleEl.checked;
+      const rgba     = `rgba(${r},${g},${b},${alpha/255})`;
+      const outlineCSS = outline? `0 0 0 ${ot}px #000` : 'none';
+
+      // draw bars
+      Object.assign(bars.top.style, {
+        width:`${thick}px`, height:`${size}px`,
+        left:`${C-thick/2}px`, top:`${C-gap-size}px`,
+        background:rgba, boxShadow:outlineCSS
+      });
+      Object.assign(bars.bottom.style, {
+        width:`${thick}px`, height:`${size}px`,
+        left:`${C-thick/2}px`, top:`${C+gap}px`,
+        background:rgba, boxShadow:outlineCSS
+      });
+      Object.assign(bars.left.style, {
+        width:`${size}px`, height:`${thick}px`,
+        left:`${C-gap-size}px`, top:`${C-thick/2}px`,
+        background:rgba, boxShadow:outlineCSS
+      });
+      Object.assign(bars.right.style, {
+        width:`${size}px`, height:`${thick}px`,
+        left:`${C+gap}px`, top:`${C-thick/2}px`,
+        background:rgba, boxShadow:outlineCSS
+      });
+      Object.assign(bars.dot.style, {
+        display: dot?'block':'none',
+        width:`${thick}px`, height:`${thick}px`,
+        left:`${C-thick/2}px`, top:`${C-thick/2}px`,
+        background:rgba, boxShadow:outlineCSS
+      });
+
+      // sensitivity
+      const dpi   = +dpiEl.value;
+      const sens  = +gamesensEl.value;
+      const zoom  = +zoomEl.value;
+      const edpi  = Math.round(dpi * sens);
+      edpiEl.value = edpi;
+
+      // build commands
+      const lines = [
+        // crosshair
+        'cl_crosshaircolor 5;',
+        `cl_crosshaircolor_r ${r};`,
+        `cl_crosshaircolor_g ${g};`,
+        `cl_crosshaircolor_b ${b};`,
+        `cl_crosshairalpha ${alpha};`,
+        `cl_crosshairsize ${size};`,
+        `cl_crosshairthickness ${thick};`,
+        `cl_crosshairgap ${gap};`,
+        `cl_crosshairdot ${dot?1:0};`,
+        `cl_crosshair_drawoutline ${outline?1:0};`,
+        `cl_crosshair_outlinethickness ${ot};`,
+        `cl_crosshair_t_style ${tsty?1:0};`,
+        '',
+        // sensitivity
+        `sensitivity ${sens.toFixed(2)};`,
+        `zoom_sensitivity_ratio_mouse ${zoom.toFixed(2)};`,
+        `// your eDPI: ${edpi}`
+      ];
+      cmdsEl.value = lines.join('\n');
+    }
+
+    // load a pro preset
+    function loadPlayer(name) {
+      const p = players[name];
+      colorEl.value     = p.color;
+      alphaEl.value     = p.alpha;
+      sizeEl.value      = p.size;
+      thickEl.value     = p.thickness;
+      gapEl.value       = p.gap;
+      dotEl.checked     = p.dot;
+      outlineEl.checked = p.outline;
+      outThickEl.value  = p.outlineTh;
+      tstyleEl.checked  = p.tstyle;
+      dpiEl.value       = p.dpi;
+      gamesensEl.value  = p.gamesens;
+      zoomEl.value      = p.zoom;
+      update();
+    }
+
+    // wire events
+    ;[
+      colorEl, alphaEl, sizeEl, thickEl,
+      gapEl, dotEl, outlineEl, outThickEl,
+      tstyleEl, dpiEl, gamesensEl, zoomEl
+    ].forEach(el => el.addEventListener('input', update));
+
+    get('playerList').querySelectorAll('li')
+      .forEach(li=>li.addEventListener('click', ()=>loadPlayer(li.dataset.player)));
+
+    copyBtn.addEventListener('click',()=>{
+      navigator.clipboard.writeText(cmdsEl.value)
+        .then(()=>{
+          copyBtn.textContent = 'Copied!';
+          setTimeout(()=>copyBtn.textContent='Copy All',1200);
+        });
+    });
+
+    // init
+    update();
+  </script>
+
+</body>
+</html>
